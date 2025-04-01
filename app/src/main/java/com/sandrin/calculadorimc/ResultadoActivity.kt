@@ -15,9 +15,7 @@ class ResultadoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_resultado)
 
-        textPeso = findViewById(R.id.text_peso)
-        textAltura = findViewById(R.id.text_altura)
-        textResultado = findViewById(R.id.text_resultado)
+        inicializarComponentesInterface()
 
         val bundle = intent.extras
 
@@ -29,21 +27,30 @@ class ResultadoActivity : AppCompatActivity() {
             textPeso.text = "Peso informado: $peso Kg"
             textAltura.text = "Altura informada: $altura m"
 
-            val imc = peso / (altura * altura)
-
-            val resultado = if( imc < 18.5 ){
-                "Baixo"
-            }else if ( imc in 18.5 .. 24.9 ){
-                "Normal"
-            }else if( imc in 25.0 .. 29.9 ){
-                "Sobrepeso"
-            }else{
-                "Obeso"
-            }
+            val resultado = calcularImc(peso, altura)
 
             textResultado.text = resultado
 
         }
 
     }
+    private fun inicializarComponentesInterface(){
+
+        textPeso = findViewById(R.id.text_peso)
+        textAltura = findViewById(R.id.text_altura)
+        textResultado = findViewById(R.id.text_resultado)
+
+    }
+    private fun calcularImc(p: Double, a: Double): String {
+        val imc = p / (a * a)
+        val imcFormatado = String.format("%.2f", imc) // Formata com 2 casas decimais
+
+        return when {
+            imc < 18.5 -> "IMC: $imcFormatado \n Situação -> Baixo"
+            imc in 18.5..24.9 -> "IMC: $imcFormatado \n Situação -> Normal"
+            imc in 25.0..29.9 -> "IMC: $imcFormatado \n Situação -> Sobrepeso"
+            else -> "IMC: $imcFormatado \n Situação -> Obeso"
+        }
+    }
+
 }

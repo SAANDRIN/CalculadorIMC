@@ -5,22 +5,24 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.textfield.TextInputLayout
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var btnCalcular: Button
+    private lateinit var txtInputPeso: TextInputLayout
+    private lateinit var txtInputAltura: TextInputLayout
+
     private lateinit var editPeso: EditText
     private lateinit var editAltura: EditText
+
+    private lateinit var btnCalcular: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
-        btnCalcular = findViewById(R.id.btn_calcular)
-        editPeso = findViewById(R.id.edit_peso)
-        editAltura = findViewById(R.id.edit_altura)
+        inicializarComponentesInterface()
 
         btnCalcular.setOnClickListener {
 
@@ -29,18 +31,44 @@ class MainActivity : AppCompatActivity() {
             val peso = editPeso.text.toString()
             val altura = editAltura.text.toString()
 
-            if( peso.isNotEmpty() && altura.isNotEmpty() ){
+            val inputUsuario = verificarInputUsuario(peso, altura)
+
+            if( inputUsuario == true ){
 
                 intent.putExtra("peso", peso.toDouble() )
                 intent.putExtra("altura", altura.toDouble() )
 
+                startActivity( intent )
+
             }
-
-            startActivity( intent )
-
-
         }
+    }
+    private fun inicializarComponentesInterface(){
+
+        txtInputPeso = findViewById(R.id.textInputPeso)
+        txtInputAltura = findViewById(R.id.textInputAltura)
+
+        editPeso = findViewById(R.id.editPeso)
+        editAltura = findViewById(R.id.editAltura)
+
+        btnCalcular = findViewById(R.id.btnCalcular)
+    }
+    private fun verificarInputUsuario(p: String, a: String): Boolean{
+
+    txtInputPeso.error = ""
+    txtInputAltura.error = ""
 
 
+        val verificacao =
+            if(p.isEmpty()){
+            txtInputPeso.error = "Digite o Peso"
+            false
+        } else if(a.isEmpty()){
+            txtInputAltura.error = "Digite o Peso"
+            false
+        } else {
+            true
+        }
+        return verificacao
     }
 }
