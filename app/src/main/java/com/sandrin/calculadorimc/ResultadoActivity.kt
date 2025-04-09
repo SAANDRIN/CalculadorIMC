@@ -1,23 +1,23 @@
 package com.sandrin.calculadorimc
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.sandrin.calculadorimc.databinding.ActivityResultadoBinding
 
 
 class ResultadoActivity : AppCompatActivity() {
 
-    private lateinit var textPeso: TextView
-    private lateinit var textAltura: TextView
-    private lateinit var textResultado: TextView
+    private val binding: ActivityResultadoBinding by lazy {
+        ActivityResultadoBinding.inflate( layoutInflater )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_resultado)
-
-        inicializarComponentesInterface()
+        setContentView( binding.root )
 
         val bundle = intent.extras
+
+        with( binding ) {
 
         if( bundle != null ){
 
@@ -31,16 +31,10 @@ class ResultadoActivity : AppCompatActivity() {
 
             textResultado.text = resultado
 
+            }
         }
-
     }
-    private fun inicializarComponentesInterface(){
 
-        textPeso = findViewById(R.id.text_peso)
-        textAltura = findViewById(R.id.text_altura)
-        textResultado = findViewById(R.id.text_resultado)
-
-    }
     private fun calcularImc(p: Double, a: Double): String {
         val imc = p / (a * a)
         val imcFormatado = String.format("%.2f", imc) // Formata com 2 casas decimais
